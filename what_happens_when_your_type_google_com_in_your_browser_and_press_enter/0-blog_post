@@ -1,0 +1,185 @@
+# What Happens When You Type https://www.google.com in Your Browser?
+
+This is one of the most classic questions in software engineering interviews—and for good reason. It tests your understanding of how the web works end-to-end, from the browser all the way to backend systems.
+
+Let’s walk through the full journey step by step.
+
+---
+
+## 1. DNS Request (Domain Name System)
+
+When you type `https://www.google.com` into your browser, the first thing your system needs is the IP address associated with that domain.
+
+### Steps:
+
+* The browser checks its **cache** to see if it already knows the IP.
+* If not, it asks the **operating system (OS)**.
+* If still not found, the OS queries a **DNS resolver** (usually provided by your ISP).
+* The resolver may contact:
+
+  * Root DNS servers
+  * TLD servers (.com)
+  * Authoritative DNS servers (for google.com)
+
+### Result:
+
+You get an IP address like `142.250.xxx.xxx`.
+
+---
+
+## 2. TCP/IP Connection
+
+Now that the IP address is known, your browser establishes a connection using **TCP (Transmission Control Protocol)**.
+
+### TCP 3-Way Handshake:
+
+1. Client → Server: SYN
+2. Server → Client: SYN-ACK
+3. Client → Server: ACK
+
+This ensures a reliable connection is established before sending data.
+
+---
+
+## 3. Firewall Check
+
+Before the request proceeds:
+
+* Your **local firewall** checks outgoing traffic.
+* The **server-side firewall** checks incoming requests.
+
+Firewalls ensure:
+
+* Only allowed traffic passes through
+* Malicious or suspicious traffic is blocked
+
+---
+
+## 4. HTTPS / SSL (Secure Connection)
+
+Since the URL starts with `https://`, a secure connection is established using **SSL/TLS**.
+
+### Steps:
+
+* The server sends its **SSL certificate**.
+* The browser verifies:
+
+  * Certificate validity
+  * Trusted Certificate Authority (CA)
+* A **symmetric session key** is generated for encryption.
+
+### Result:
+
+All communication is now encrypted.
+
+---
+
+## 5. Load Balancer
+
+Large systems like Google don’t rely on a single server.
+
+### What happens:
+
+* Your request is routed to a **load balancer**
+* The load balancer distributes traffic across multiple servers
+
+### Benefits:
+
+* High availability
+* Fault tolerance
+* Scalability
+
+---
+
+## 6. Web Server
+
+The request reaches a **web server** (e.g., Nginx, Apache).
+
+### Responsibilities:
+
+* Handle HTTP requests
+* Serve static content (HTML, CSS, JS)
+* Forward dynamic requests to the application server
+
+---
+
+## 7. Application Server
+
+If the request requires logic (e.g., search results), it is handled by the **application server**.
+
+### Responsibilities:
+
+* Execute business logic
+* Process user input
+* Interact with databases and services
+
+---
+
+## 8. Database
+
+If data is needed (e.g., search index, user data), the application server queries a **database**.
+
+### Examples:
+
+* SQL databases (MySQL, PostgreSQL)
+* NoSQL databases (Bigtable, MongoDB)
+
+### Result:
+
+Relevant data is retrieved and sent back to the application server.
+
+---
+
+## 9. Response Back to Browser
+
+The application server:
+
+* Prepares the response (HTML/JSON)
+* Sends it back through the web server
+
+The data travels:
+
+* Through the load balancer
+* Over the secure HTTPS connection
+* Back to your browser
+
+---
+
+## 10. Browser Rendering (DOM)
+
+Finally, the browser renders the page:
+
+### Steps:
+
+* Parses HTML → builds **DOM (Document Object Model)**
+* Parses CSS → builds **CSSOM**
+* Combines them → builds **Render Tree**
+* Executes JavaScript
+* Paints pixels on the screen
+
+---
+
+## Final Summary
+
+Typing a simple URL triggers a complex chain of events:
+
+1. DNS resolves domain → IP
+2. TCP connection is established
+3. Firewall validates traffic
+4. HTTPS secures communication
+5. Load balancer distributes request
+6. Web server receives request
+7. Application server processes logic
+8. Database provides data
+9. Response is returned
+10. Browser renders the page
+
+---
+
+## Conclusion
+
+Understanding this flow is crucial for software engineers, especially when debugging performance issues, designing scalable systems, or preparing for interviews.
+
+The next time you press Enter after typing a URL, remember—you’ve just triggered one of the most sophisticated systems ever built.
+
+---
